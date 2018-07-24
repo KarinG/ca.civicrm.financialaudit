@@ -14,7 +14,7 @@ return array (
       'label' => 'Financial Audit',
       'description' => ' Financial Audit Report',
       'class_name' => 'CRM_Financialaudit_Form_Report_Financialaudit',
-      'report_url' => 'ca.civicrm.financialaudit/financialaudit/',
+      'report_url' => 'ca.civicrm.financialaudit/financialaudit',
       'component' => 'CiviContribute',
     ),
   ),
