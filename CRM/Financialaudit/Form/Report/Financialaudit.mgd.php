@@ -6,15 +6,15 @@
 return array (
   0 => 
   array (
-    'name' => 'CRM_Contributionrecur_Form_Report_Recur',
+    'name' => 'CRM_Financialaudit_Form_Report_Financialaudit',
     'entity' => 'ReportTemplate',
     'params' => 
     array (
       'version' => 3,
-      'label' => 'Recurring Contributions',
-      'description' => 'Recurring Contributions Report',
-      'class_name' => 'CRM_Contributionrecur_Form_Report_Recur',
-      'report_url' => 'ca.civicrm.contributionrecur/recur',
+      'label' => 'Financial Audit',
+      'description' => ' Financial Audit Report',
+      'class_name' => 'CRM_Financialaudit_Form_Report_Financialaudit',
+      'report_url' => 'ca.civicrm.financialaudit/financialaudit/',
       'component' => 'CiviContribute',
     ),
   ),
