@@ -112,20 +112,22 @@
       parent::alterDisplay($rows);
 
       foreach ($rows as $rowNum => $row) {
-        // convert display name to links
+
         if (array_key_exists('civicrm_contact_civicrm_contact_sort_name', $row) &&
-          CRM_Utils_Array::value('civicrm_contact_civicrm_contact_sort_name', $rows[$rowNum]) &&
-          array_key_exists('civicrm_contact_civicrm_contact_id', $row)
+        CRM_Utils_Array::value('civicrm_contact_civicrm_contact_sort_name', $rows[$rowNum]) &&
+        array_key_exists('civicrm_contact_civicrm_contact_contact_id', $row)
         ) {
           $url = CRM_Utils_System::url('civicrm/contact/view',
-            'reset=1&cid=' . $row['civicrm_contact_civicrm_contact_id'],
+            'reset=1&cid=' . $row['civicrm_contact_civicrm_contact_contact_id'],
             $this->_absoluteUrl
           );
           $rows[$rowNum]['civicrm_contact_civicrm_contact_sort_name_link'] = $url;
           $rows[$rowNum]['civicrm_contact_civicrm_contact_sort_name_hover'] = ts('View Contact Summary for this Contact.');
         }
+
+        $rows[$rowNum]['civicrm_contribution_contribution_total_amount_sum'] = $rows[$rowNum]['civicrm_contribution_contribution_total_amount_sum'] / $rows[$rowNum]['civicrm_contribution_contribution_total_amount_count'];
+
       }
 
-
-      }
+    }
   }
