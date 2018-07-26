@@ -46,8 +46,6 @@
       $this->_columns
         = $this->getColumns('Contact', array('order_by' => TRUE, 'fields_defaults' => array('sort_name', 'id')))
         + $this->getColumns('Contribution', array('order_by' => TRUE, 'fields_defaults' => array('total_amount', 'trxn_id', 'receive_date', 'id', 'contribution_status_id')))
-        + $this->getColumns('PriceField', array('order_by' => TRUE))
-        + $this->getColumns('PriceFieldValue' , array('order_by' => TRUE))
         + $this->getColumns('LineItem', array('order_by' => TRUE, 'fields_defaults' => array('financial_type_id', 'line_total', 'tax_amount')));
       parent::__construct();
     }
@@ -69,8 +67,6 @@
      */
     public function fromClauses() {
       return array(
-        'priceFieldValue_from_lineItem',
-        'priceField_from_lineItem',
         'contribution_from_lineItem',
         'contact_from_contribution',
       );
