@@ -47,12 +47,44 @@
         = $this->getColumns('Contact', array('order_by' => TRUE, 'fields_defaults' => array('sort_name', 'id')))
         + $this->getColumns('Event')
         + $this->getColumns('Participant')
-        + $this->getColumns('Contribution', array('order_by' => TRUE, 'fields_defaults' => array('total_amount', 'trxn_id', 'receive_date', 'id')))
+        + $this->getColumns('Contribution', array('order_by' => TRUE, 'fields_defaults' => array('total_amount', 'trxn_id', 'receive_date', 'id', 'contribution_status_id')))
         + $this->getColumns('PriceField', array('order_by' => TRUE))
         + $this->getColumns('PriceFieldValue' , array('order_by' => TRUE))
         + $this->getColumns('LineItem', array('order_by' => TRUE, 'fields_defaults' => array('financial_type_id', 'line_total', 'tax_amount')));
       parent::__construct();
     }
+
+  //  $this->_columns['civicrm_contribution']['fields']['id']['required'] = TRUE;
+
+  //  $this->_columns['civicrm_contribution']['filters']['contribution_or_soft'] = array(
+  //  'title' => ts('Contribution OR Soft Credit?'),
+  //  'clause' => "(1)",
+  //  'operatorType' => CRM_Report_Form::OP_SELECT,
+  //  'type' => CRM_Utils_Type::T_STRING,
+  //  'options' => array(
+  //  'contributions_only' => ts('Contributions Only'),
+  //  'both' => ts('Both'),
+  //  'soft_credits_only' => ts('Soft Credits Only'),
+  //  ),
+  //  );
+
+  //     $this->_columns['civicrm_note'] = array(
+  //'dao' => 'CRM_Core_DAO_Note',
+  //'fields' => array(
+  //'contribution_note' => array(
+  //'name' => 'note',
+  //'title' => ts('Contribution Note'),
+  //),
+  //),
+  //'filters' => array(
+  //'note' => array(
+  //'name' => 'note',
+  //'title' => ts('Contribution Note'),
+  //'operator' => 'like',
+  //'type' => CRM_Utils_Type::T_STRING,
+  //),
+  //),
+  //);
 
     function preProcess() {
       parent::preProcess();
