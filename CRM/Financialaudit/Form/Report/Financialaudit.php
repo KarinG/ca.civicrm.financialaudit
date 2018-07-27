@@ -73,6 +73,7 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
 
   function groupBy() {
     parent::groupBy();
+    //$this->_groupByArray = ['civicrm_contribution_id' => $this->_aliases['civicrm_contribution'] . '.id'];
   }
 
   function orderBy() {
@@ -102,9 +103,16 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     parent::alterDisplay($rows);
 
     // when we Group by Contribution ID => the total_amount_count means => Number of LineItems
-    // change label:
+    // change labels:
+    $this->_columnHeaders['civicrm_contact_civicrm_contact_sort_name']['title'] = "Contact Name";
     $this->_columnHeaders['civicrm_contribution_contribution_total_amount_count']['title'] = "#Line Items";
     $this->_columnHeaders['civicrm_line_item_line_item_contribution_id_count']['title'] = "Delta with Line Items";
+
+    // Jitendra's fix - no longer merged in ExtendedReports: https://github.com/eileenmcnaughton/nz.co.fuzion.extendedreport/pull/98/files
+    $lastIndex = key(array_slice($rows, -1, 1, TRUE));
+    foreach ($rows[$lastIndex] as $key => &$val) {
+      $val = NULL;
+    }
 
     foreach ($rows as $rowNum => $row) {
 
@@ -137,9 +145,15 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
         $rows[$rowNum]['civicrm_line_item_line_item_contribution_id_count_hover'] = ts('View Contribution.');
       }
     }
+
+    $this->rollupRow = array_shift($rows);
+    foreach ($this->rollupRow as $key => &$value){
+      $value += array_sum(array_column($rows, $key));
+    }
+    unset($value);
+
     $this->rollupRow['civicrm_contact_civicrm_contact_contact_id'] = "Totals";
-    // $this->rollupRow['civicrm_campaign_campaign_goal_revenue'] = $runningTotalRaised;
-    // $this->rollupRow['progress_still_to_raise'] = $runningTotalLeft;
+
     $this->assign('grandStat', $this->rollupRow);
 
     $test = 1;
