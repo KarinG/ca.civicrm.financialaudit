@@ -33,7 +33,6 @@
  *
  */
 class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_Form_Report_ExtendedReport {
-  // protected $_customGroupExtends = array('Contribution');
 
   protected $_baseTable = 'civicrm_line_item';
   protected $_aclTable = 'civicrm_contact';
@@ -45,7 +44,7 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     $this->_columns
       = $this->getColumns('Contact', array('fields_defaults' => array('sort_name', 'id')))
       + $this->getColumns('Contribution', array('fields_defaults' => array('total_amount', 'trxn_id', 'receive_date', 'id', 'contribution_status_id')))
-      + $this->getColumns('LineItem', array('fields_defaults' => array('financial_type_id', 'line_total', 'tax_amount', 'unit_price')));
+      + $this->getColumns('LineItem', array('fields_defaults' => array('financial_type_id', 'line_total', 'tax_amount')));
     parent::__construct();
   }
 
@@ -105,9 +104,10 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     // change labels:
     $this->_columnHeaders['civicrm_contact_civicrm_contact_sort_name']['title'] = "Contact Name";
     $this->_columnHeaders['civicrm_contribution_contribution_total_amount_count']['title'] = "#Line Items";
-    $this->_columnHeaders['civicrm_line_item_line_item_contribution_id_count']['title'] = "Delta with Line Items";
+    $this->_columnHeaders['civicrm_delta']['title'] = "Delta with Line Items";
 
     // Jitendra's fix - no longer merged in ExtendedReports: https://github.com/eileenmcnaughton/nz.co.fuzion.extendedreport/pull/98/files
+    // ROLLUP adds an additional row (CONCAT) - so we need to slice by 1 row
     $lastIndex = key(array_slice($rows, -1, 1, TRUE));
     foreach ($rows[$lastIndex] as $key => &$val) {
       $val = NULL;
@@ -130,18 +130,17 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
 
       $rows[$rowNum]['civicrm_contribution_contribution_total_amount_sum'] = $rows[$rowNum]['civicrm_contribution_contribution_total_amount_sum'] / $rows[$rowNum]['civicrm_contribution_contribution_total_amount_count'];
 
-      $rows[$rowNum]['civicrm_line_item_line_item_contribution_id_count'] = $rows[$rowNum]['civicrm_contribution_contribution_total_amount_sum'] - ($rows[$rowNum]['civicrm_line_item_line_item_line_total_sum'] + $rows[$rowNum]['civicrm_line_item_line_item_tax_amount_sum']);
+      $rows[$rowNum]['civicrm_delta'] = $rows[$rowNum]['civicrm_contribution_contribution_total_amount_sum'] - ($rows[$rowNum]['civicrm_line_item_line_item_line_total_sum'] + $rows[$rowNum]['civicrm_line_item_line_item_tax_amount_sum']);
 
-      // civicrm/contact/view/contribution?reset=1&id=4406&cid=2&action=view&context=contribution&selectedChild=contribute
-      if (abs($rows[$rowNum]['civicrm_line_item_line_item_contribution_id_count']) > 0.001) {
-        $url = CRM_Utils_System::url('civicrm/contact/view',
+      if (abs($rows[$rowNum]['civicrm_delta']) > 0.001) {
+        $url = CRM_Utils_System::url('civicrm/contact/view/contribution',
           'reset=1&id=' . $row['civicrm_contribution_contribution_id'] . '&cid=' . $row['civicrm_contact_civicrm_contact_contact_id'] . '&action=view&context=contribution&selectedChild=contribute',
           $this->_absoluteUrl
         );
         $rows[$rowNum]['civicrm_contribution_contribution_id_link'] = $url;
         $rows[$rowNum]['civicrm_contribution_contribution_id_hover'] = ts('View Contribution.');
-        $rows[$rowNum]['civicrm_line_item_line_item_contribution_id_count_link'] = $url;
-        $rows[$rowNum]['civicrm_line_item_line_item_contribution_id_count_hover'] = ts('View Contribution.');
+        $rows[$rowNum]['civicrm_delta_link'] = $url;
+        $rows[$rowNum]['civicrm_delta_hover'] = ts('View Contribution.');
       }
     }
 
@@ -152,6 +151,12 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     unset($value);
 
     $this->rollupRow['civicrm_contact_civicrm_contact_contact_id'] = "Totals";
+    $this->rollupRow['civicrm_contact_civicrm_contact_sort_name'] = NULL;
+    $this->rollupRow['civicrm_contribution_contribution_id'] = NULL;
+    $this->rollupRow['civicrm_contribution_contribution_contribution_status_id'] = NULL;
+    $this->rollupRow['civicrm_contribution_contribution_trxn_id'] = NULL;
+    $this->rollupRow['civicrm_contribution_contribution_receive_date'] = NULL;
+    $this->rollupRow['civicrm_line_item_line_item_financial_type_id'] = NULL;
 
     $this->assign('grandStat', $this->rollupRow);
 
