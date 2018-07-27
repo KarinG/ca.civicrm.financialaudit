@@ -137,6 +137,11 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
         $rows[$rowNum]['civicrm_line_item_line_item_contribution_id_count_hover'] = ts('View Contribution.');
       }
     }
+    $this->rollupRow['civicrm_contact_civicrm_contact_contact_id'] = "Totals";
+    // $this->rollupRow['civicrm_campaign_campaign_goal_revenue'] = $runningTotalRaised;
+    // $this->rollupRow['progress_still_to_raise'] = $runningTotalLeft;
+    $this->assign('grandStat', $this->rollupRow);
 
+    $test = 1;
   }
 }
