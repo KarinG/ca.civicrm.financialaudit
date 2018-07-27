@@ -128,7 +128,7 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
       // civicrm/contact/view/contribution?reset=1&id=4406&cid=2&action=view&context=contribution&selectedChild=contribute
       if (abs($rows[$rowNum]['civicrm_line_item_line_item_contribution_id_count']) > 0.001) {
         $url = CRM_Utils_System::url('civicrm/contact/view',
-          'reset=1&id=' . $row['civicrm_contribution_contribution_id'] . '&cid=' . $row['civicrm_contact_civicrm_contact_contact_id'],
+          'reset=1&id=' . $row['civicrm_contribution_contribution_id'] . '&cid=' . $row['civicrm_contact_civicrm_contact_contact_id'] . '&action=view&context=contribution&selectedChild=contribute',
           $this->_absoluteUrl
         );
         $rows[$rowNum]['civicrm_contribution_contribution_id_link'] = $url;
