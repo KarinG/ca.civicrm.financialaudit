@@ -76,6 +76,7 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
 
   function orderBy() {
     parent::orderBy();
+    // If I add this under groupBy - ExtendedReport thinks we want to groupBy line_item.id
     $this->_groupByArray = ['civicrm_contribution_id' => $this->_aliases['civicrm_contribution'] . '.id'];
   }
 
@@ -100,8 +101,7 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
   public function alterDisplay(&$rows) {
     parent::alterDisplay($rows);
 
-    // when we Group by Contribution ID => the total_amount_count means => Number of LineItems
-    // change labels:
+    // Change labels:
     $this->_columnHeaders['civicrm_contact_civicrm_contact_sort_name']['title'] = "Contact Name";
     $this->_columnHeaders['civicrm_contribution_contribution_total_amount_count']['title'] = "#Line Items";
     $this->_columnHeaders['civicrm_delta']['title'] = "Delta with Line Items";
@@ -159,7 +159,5 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     $this->rollupRow['civicrm_line_item_line_item_financial_type_id'] = NULL;
 
     $this->assign('grandStat', $this->rollupRow);
-
-    $test = 1;
   }
 }
