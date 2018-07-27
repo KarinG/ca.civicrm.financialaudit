@@ -73,11 +73,11 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
 
   function groupBy() {
     parent::groupBy();
-    $this->_groupByArray = ['civicrm_contribution_id' => $this->_aliases['civicrm_contribution'] . '.id'];
   }
 
   function orderBy() {
     parent::orderBy();
+    $this->_groupByArray = ['civicrm_contribution_id' => $this->_aliases['civicrm_contribution'] . '.id'];
   }
 
   /**
