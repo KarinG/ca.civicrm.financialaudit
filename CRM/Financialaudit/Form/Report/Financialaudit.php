@@ -45,7 +45,7 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     $this->_columns
       = $this->getColumns('Contact', array('fields_defaults' => array('sort_name', 'id')))
       + $this->getColumns('Contribution', array('fields_defaults' => array('total_amount', 'trxn_id', 'receive_date', 'id', 'contribution_status_id')))
-      + $this->getColumns('LineItem', array('fields_defaults' => array('financial_type_id', 'line_total', 'tax_amount', 'contribution_id')));
+      + $this->getColumns('LineItem', array('fields_defaults' => array('financial_type_id', 'line_total', 'tax_amount', 'unit_price')));
     parent::__construct();
   }
 
@@ -73,12 +73,11 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
 
   function groupBy() {
     parent::groupBy();
-    //$this->_groupByArray = ['civicrm_contribution_id' => $this->_aliases['civicrm_contribution'] . '.id'];
+    $this->_groupByArray = ['civicrm_contribution_id' => $this->_aliases['civicrm_contribution'] . '.id'];
   }
 
   function orderBy() {
     parent::orderBy();
-    $this->_groupByArray = ['civicrm_contribution_id' => $this->_aliases['civicrm_contribution'] . '.id'];
   }
 
   /**
