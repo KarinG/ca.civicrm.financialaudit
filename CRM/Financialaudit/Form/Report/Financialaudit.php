@@ -48,14 +48,6 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     parent::__construct();
   }
 
-  function preProcess() {
-    parent::preProcess();
-  }
-
-  function select() {
-    parent::select();
-  }
-
   /**
    * Select from clauses to use.
    *
@@ -63,15 +55,12 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
    *
    * @return array
    */
-  public function fromClauses() {
-    return array(
+
+  public function fromClauses() :array {
+    return [
       'contribution_from_lineItem',
       'contact_from_contribution',
-    );
-  }
-
-  function groupBy() {
-    parent::groupBy();
+    ];
   }
 
   function orderBy() {
@@ -89,17 +78,12 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     return parent::statistics($rows);
   }
 
-  function postProcess() {
-    parent::postProcess();
-  }
-
   /**
    * Alter rows display.
    *
    * @param $rows
    */
-  public function alterDisplay(&$rows) {
-    parent::alterDisplay($rows);
+  public function alterDisplay(&$rows): void {
 
     // Change labels:
     $this->_columnHeaders['civicrm_contact_civicrm_contact_sort_name']['title'] = "Contact Name";
@@ -159,5 +143,7 @@ class CRM_Financialaudit_Form_Report_Financialaudit extends CRM_Extendedreport_F
     $this->rollupRow['civicrm_line_item_line_item_financial_type_id'] = NULL;
 
     $this->assign('grandStat', $this->rollupRow);
+
+    parent::alterDisplay($rows);
   }
 }
