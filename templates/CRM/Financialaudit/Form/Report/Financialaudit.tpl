@@ -5,7 +5,7 @@
   <style>
     .crm-report-civicrm_delta {
       text-align: right;
-      color: green;
+      color: green !important;
     }
   </style>
 {/literal}
